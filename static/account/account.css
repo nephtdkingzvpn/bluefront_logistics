@@ -1,0 +1,43 @@
+.navbar {
+  background-color: #d80f0f;
+}
+.sidebar {
+  height: 100vh;
+  width: 220px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #d80f0f;
+  /* background-color: #343a40; */
+  padding-top: 1rem;
+  transition: transform 0.3s ease-in-out;
+}
+.sidebar a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: 10px 15px;
+}
+.sidebar a:hover {
+  background-color: #0e0d0d;
+}
+.sidebar.collapsed {
+  transform: translateX(-100%);
+}
+.content {
+  margin-left: 220px;
+  transition: margin-left 0.3s ease-in-out;
+}
+.content.collapsed {
+  margin-left: 0;
+}
+
+/* table */
+.table-condensed {
+  font-size: 13px;
+}
+
+.btn-table {
+  font-size: 12px !important;
+  padding: 2px 5px;
+}
