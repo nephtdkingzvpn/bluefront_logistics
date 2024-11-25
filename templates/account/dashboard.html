@@ -40,9 +40,15 @@
                                     <td>{{shipment.destination_office}}</td>
                                     <td>{{shipment.tracking_number}}</td>
                                     <td>
+                                        <a href="{% url 'account:shipment_detail' shipment.id %}" class="btn btn-primary text-white btn-sm fw-bold btn-table">Details</a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'account:edit_shipment' shipment.id %}" class="btn btn-info text-white btn-sm fw-bold btn-table">Edit</a>
+                                    </td>
+                                    <td>
                                         <a href="{% url 'account:delete_shipment' shipment.id %}" class="btn btn-danger btn-sm fw-bold btn-table">Delete</a>
                                     </td>
-                                    <td></td>
+                                    
                                     <td></td>
                                 </tr>
                             

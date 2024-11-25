@@ -2,6 +2,11 @@ from django import forms
 
 from .models import Shipment
 
+
+class DateInput(forms.DateInput):
+	input_type = 'date'
+
+
 class ShipmentCreateForm(forms.ModelForm):
 
     class Meta:
@@ -13,6 +18,8 @@ class ShipmentCreateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields['content'].widget = forms.Textarea(attrs={'rows':1, 'cols':15})
+        self.fields['shipping_date'].widget = DateInput()
+        self.fields['delivery_date'].widget = DateInput()
 
         for field in self.fields:
             self.fields[field].widget.attrs.update({'class': 'form-control'})

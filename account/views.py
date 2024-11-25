@@ -5,7 +5,7 @@ from django.views.generic.list import ListView
 from django.urls import reverse_lazy
 from django.contrib import messages
 
-from .models import Shipment
+from .models import Shipment, LiveUpdate
 from .forms import ShipmentCreateForm
 
 class DashboardView(LoginRequiredMixin, ListView):
@@ -37,8 +37,31 @@ def create_new_shipment(request):
     return render(request, 'account/create_shipment.html', context)
 
 
-def delete_shipment(request, id):
-    shipment = Shipment.objects.get(id=id)
+def edit_shipment(request, pk):
+    shipment = Shipment.objects.get(pk=pk)
+    form = ShipmentCreateForm(request.POST or None, instance=shipment)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Shippment was Updated successfully')
+        return redirect('account:dashboard')
+    
+    context = {'form':form}
+    return render(request, 'account/edit_shipment.html', context)
+
+
+def shipment_detail(request, pk):
+    shipment = Shipment.objects.get(pk=pk)
+    live_update = LiveUpdate.objects.filter(shipment=shipment)
+    live_update_count = live_update.count()
+    latest_update = live_update.first()
+
+    context = {'shipment': shipment, 'live_update': live_update, 'update_count':live_update_count, 'latest_update':latest_update}
+    return render(request, 'account/shipment_detail.html', context)
+
+
+def delete_shipment(request, pk):
+    shipment = Shipment.objects.get(pk=pk)
     shipment.delete()
     messages.success(request, 'Shipment was deleted successfully')
     return redirect('account:dashboard')

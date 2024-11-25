@@ -1,4 +1,5 @@
 from django.db import models
+from . import constants
 
 class Shipment(models.Model):
     sender_name = models.CharField(max_length=150)
@@ -31,9 +32,13 @@ class Shipment(models.Model):
 
 
 class LiveUpdate(models.Model):
+    shipment = models.ForeignKey(Shipment, related_name='live_update', on_delete=models.CASCADE)
     current_location = models.CharField(max_length=150)
     status = models.CharField(max_length=150)
     remark = models.CharField(max_length=500, null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
+    stages_status = models.CharField(max_length=50, choices=constants.STATES_LIVE_CHOICES)
+    stages_label = models.CharField(max_length=50, choices=constants.STATES_LABEL_CHOICES)
+
     def __str__(self):
         return self.status
