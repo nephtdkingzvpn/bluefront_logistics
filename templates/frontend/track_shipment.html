@@ -1,0 +1,329 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    #track-hero{
+        background-image: linear-gradient(rgba(6, 3, 21, .7), rgba(6, 3, 21, .6)), url(/static/frontend/images/carousel-2.jpg);
+        /* background-color: red; */
+        background-size: cover;
+        height: 300px;
+        background-repeat: no repeat;
+        background-position: center;
+    }
+
+    /* live tracking css */
+    .tracking-container {
+    max-width: 600px;
+    margin: 7px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .tracking-header {
+    text-align: center;
+    margin-bottom: 20px;
+    }
+    .tracking-header h1 {
+    font-size: 24px;
+    color: #333;
+    }
+    .steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    }
+    .steps::before {
+    content: "";
+    position: absolute;
+    top: 40%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #ccc;
+    transform: translateY(-50%);
+    z-index: 1;
+    }
+    .step {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    flex: 1;
+    }
+    .step .circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    color: #fff;
+    font-weight: bold;
+    }
+    .step.active .circle {
+    background: #28a745;
+    }
+    .step.complete .circle {
+    background: #28a745;
+    }
+    .step.blocked .circle {
+    background: #c40c0c;
+    }
+    .step.pending .circle {
+    background: #ccc;
+    }
+    .step.complete .circle::after {
+    content: "\2713"; /* Checkmark symbol */
+    font-size: 16px;
+    }
+    .step .label {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+    }
+    .step .date-time {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #666;
+    }
+
+
+
+
+
+    .btn:hover{
+        background-color: rgb(19, 18, 18);
+    }
+    .bg-secondary{
+        background-color: rgb(212, 211, 218) !important;
+    }
+    .bg-light{
+        background-color: rgb(237, 240, 241) !important;
+    }
+    .table_will_space {
+        border-collapse: separate;
+        border-spacing:0 20px;
+    }
+
+    .comment-header{
+        color: rgb(229, 229, 241);
+        text-align: center;
+        font-size: 20px;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+    .comment-card{
+        border-top-right-radius: 90px !important;
+        border-bottom-left-radius: 78px !important;
+    }
+</style>
+
+<!-- track hero -->
+ <section id="track-hero">
+    <div class="container py-5">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-7 py-3 mt-5">
+                <h4 class="text-center text-white mb-3">Track Your shipment Here</h4>
+                <form action="." method="POST">
+                    {% csrf_token%}
+
+                    <div class="input-group mb-3">
+                        <input type="text" name="tracking_code" class="form-control" placeholder="Tracking Code">
+                        <button class="btn btn-dark" type="submit" id="button-addon2">Track Now</button>
+                    </div>
+                    {% include '../account/include/alert.html' %}
+                </form>
+            </div>
+        </div>
+    </div>
+
+ </section>
+<!-- track hero end-->
+
+<!-- .shipment -->
+{% if shipments %}
+<div class="container mt-5">
+    <div class="row justify-content-center align-items-center mb-5">
+        <div class="col-md-11">
+            <div class="card p-1">
+                <div class="card-body">
+                    <h5 class="card-header text-center">Shipment: {{shipment_single.tracking_number}}</h5>
+
+
+
+                    <!-- live tracking html -->
+                    <div class="tracking-container">
+                        <div class="tracking-header">
+                            <h1>Live Tracking Status</h1>
+                        </div>
+                        <div class="steps">
+                            {% for update in live_update %}
+                                <div class="step {{update.stages_status}}">
+                                    <div class="circle"></div>
+                                    <div class="label">{{update.stages_label}}</div>
+                                    <div class="date-time">{{update.created_on}}</div>
+                                </div>
+                            {% endfor %}
+                            
+                            
+
+                            <!-- pending that will disappear -->
+                            {% if update_count <= 0 %}
+                                <div class="step pending">
+                                    <div class="circle"></div>
+                                    <div class="label">Dispatch</div>
+                                    <div class="date-time">Pending</div>
+                                </div>
+                            {% endif %}
+                            {% if update_count <= 1 %}
+                                <div class="step pending">
+                                    <div class="circle"></div>
+                                    <div class="label">Pending</div>
+                                    <div class="date-time">Pending</div>
+                                </div>
+                            {% endif %}
+                            {% if update_count <= 2 %}
+                            <div class="step pending">
+                                <div class="circle"></div>
+                                <div class="label">Pending</div>
+                                <div class="date-time">Pending</div>
+                            </div>
+                            {% endif %}
+                            {% if update_count <= 3 %}
+                            <div class="step pending">
+                                <div class="circle"></div>
+                                <div class="label">Pending</div>
+                                <div class="date-time">Pending</div>
+                            </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+                    <!-- comment card -->
+                    <div class="tracking-container p-0 p-3 comment-card bg-danger mt-3">
+                        <p class="comment-header">
+                            {{latest_update.status}}
+                        </p>
+                        <p class="text-center text-white"><strong>Update: </strong> {{latest_update.remark}}</p>
+                        <hr style="border-color: #fff;">
+                        <p class="text-center text-light">{{latest_update.created_on}}</p>
+                    </div>
+                    
+                    
+                    <hr>
+
+                </div>
+
+                {% for shipment in shipments %}
+                <div class="card bg-secondary p-1 border-0"> 
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table_will_space">
+                                <tbody>
+                                    <tr >
+                                        <td class="bg-secondary border-0 fw-bold">Tracking Code:</td>
+                                        <td class="border-0 bg-light mb-3">{{shipment.tracking_number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-secondary border-0 fw-bold col-5">Content:</td>
+                                        <td class="border-0 bg-light col-7">{{shipment.content}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-secondary border-0 fw-bold col-5">Weight:</td>
+                                        <td class="border-0 bg-light col-7">{{shipment.weight}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-secondary border-0 fw-bold col-5">Shipping Date:</td>
+                                        <td class="border-0 bg-light col-7">{{shipment.shipping_date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-secondary border-0 fw-bold col-5">Estimated Delivery Date:</td>
+                                        <td class="border-0 bg-light col-7">{{shipment.delivery_date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-secondary border-0 fw-bold col-5">Shipment Type:</td>
+                                        <td class="border-0 bg-light col-7">{{shipment.shipping_type}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-secondary border-0 fw-bold col-5">Origin Office:</td>
+                                        <td class="border-0 bg-light col-7">{{shipment.origin_office}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-secondary border-0 fw-bold col-5">Destination Office:</td>
+                                        <td class="border-0 bg-light col-7">{{shipment.destination_office}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-secondary border-0 fw-bold col-5">Total Freight:</td>
+                                        <td class="border-0 bg-light col-7">{{shipment.amount_paid}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-secondary border-0 fw-bold col-5">Booking Mode:</td>
+                                        <td class="border-0 bg-primary text-white col-7">{{shipment.booking_mode}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-secondary border-0 fw-bold col-5">Status:</td>
+                                        <td class="border-0 bg-success text-white col-7">{{latest_update.status}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {% endfor%}
+
+                
+            </div>
+
+    
+        </div>
+    </div>
+</div>
+{% else %}
+<!-- shipment recored end -->
+
+
+<!-- Feature Start -->
+<div class="container-fluid overflow-hidden py-5 px-lg-0">
+    <div class="container feature py-5 px-lg-0">
+        <div class="row g-5 mx-lg-0">
+            <div class="col-lg-6 feature-text wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="text-secondary text-uppercase mb-3">Our Features</h6>
+                <h1 class="mb-5">We Are Trusted Logistics Company Since we started</h1>
+                <div class="d-flex mb-5 wow fadeInUp" data-wow-delay="0.3s">
+                    <i class="fa fa-globe text-primary fa-3x flex-shrink-0"></i>
+                    <div class="ms-4">
+                        <h5>Worldwide Service</h5>
+                        <p class="mb-0">Committed to ensure that all our customer's shipments reach their destination on time while providing affordability and leaving the stress out of it. </p>
+                    </div>
+                </div>
+                <div class="d-flex mb-5 wow fadeIn" data-wow-delay="0.5s">
+                    <i class="fa fa-shipping-fast text-primary fa-3x flex-shrink-0"></i>
+                    <div class="ms-4">
+                        <h5>On Time Delivery</h5>
+                        <p class="mb-0">We are a company committed to providing unparalleled customer satisfaction, expert services, and ethical business conduct.</p>
+                    </div>
+                </div>
+                <div class="d-flex mb-0 wow fadeInUp" data-wow-delay="0.7s">
+                    <i class="fa fa-headphones text-primary fa-3x flex-shrink-0"></i>
+                    <div class="ms-4">
+                        <h5>24/7 Telephone Support</h5>
+                        <p class="mb-0">We have a 24 hours standby customer support to attend to your needs and answer any questions you might have.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 pe-lg-0 wow fadeInRight" data-wow-delay="0.1s" style="min-height: 400px;">
+                <div class="position-relative h-100">
+                    <img class="position-absolute img-fluid w-100 h-100" src="{% static 'frontend/images/feature.jpg' %}" style="object-fit: cover;" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Feature End -->
+{% endif %}
+{% endblock %}

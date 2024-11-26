@@ -1,0 +1,36 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- track hero -->
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="text-center">
+                        Admin Login
+                    </h5>
+                    {% include '../account/include/alert.html' %}
+                    <hr>
+                    <form action="." method="Post">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" id="username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" id="password">
+                        </div>
+                        <button class="btn btn-dark w-100 fw-bold" type="submit" id="button-addon2">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
