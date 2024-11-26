@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <title>Bluefront Xpress - Shipping Company You Can Trust</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="{% static 'frontend/img/favicon.ico' %}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Roboto:wght@500;700&amp;display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="{% static 'frontend/css/all.min.css' %}" rel="stylesheet">
+    <link href="{% static 'frontend/css/bootstrap-icons.css' %}" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'frontend/css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'frontend/css/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'frontend/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'frontend/css/style.css' %}" rel="stylesheet">
+    
+    <style>
+        #google_translate_element {
+          color: transparent;
+        }
+        #google_translate_element a {
+          display: none;
+        }
+        select.google_translate_element {
+          color: black;
+        }
+        div.goog-te-gadget {
+          color: transparent !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+    <!-- main -content -->
+    {% include './includes/navbar.html' %}
+    {% block content %}
+    {% endblock %}
+    {% include './includes/footer.html' %}
+    <!-- main content end -->
+    
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-0 back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- google transalte  -->
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+    </script>
+
+
+
+
+    <!-- JavaScript Libraries -->
+    <script src="{% static 'frontend/js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'frontend/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'frontend/js/wow.min.js' %}"></script>
+    <script src="{% static 'frontend/js/easing.min.js' %}"></script>
+    <script src="{% static 'frontend/js/waypoints.min.js' %}"></script>
+    <script src="{% static 'frontend/js/counterup.min.js' %}"></script>
+    <script src="{% static 'frontend/js/owl.carousel.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'frontend/js/main.js' %}"></script>
+
+
+</body></html>
