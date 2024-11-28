@@ -18,6 +18,32 @@
         background-position: center;
         /* margin-top: 30px; */
     }
+    .link_back{
+        background-color: rgba(0, 0, 0, 0.8);
+        margin: 1px 50px;
+        padding-block: 12px;
+        width: 240px;
+        margin-left: 200px;
+        border-radius: 10px;
+    }
+    .link_back a{
+        font-size: 19px;
+        color: #fff;
+    }
+    .link_back a:hover{
+        color: #eb0606;
+    }
+    @media (max-width: 1000px){
+        .link_back{
+          
+            margin-left: 50px;
+            padding-block: 8px;
+        }
+    }
+
+    .link_back a{
+        font-size: 14px;
+    }
     
 </style>
 
@@ -27,6 +53,10 @@
         <div class="row justify-content-center align-items-center">
             <div class="col-md-7 py-3 mt-5">
                 <h4 class="text-center text-white mb-3">About Us</h4>
+                <div class="link_back text-center">
+                    <a href="/">Home / </a>
+                    <a href="{% url 'frontend:about_us' %}" class="ms-2"> About Us</a>
+                </div>
             </div>
         </div>
     </div>
@@ -124,7 +154,7 @@
                             Our Network
                         </p>
                         <h5>
-                            We Are 100% Commited To Our Customer's Satisfaction
+                            We Cover almost Every Part Of The World
                         </h5>
                         <p>
                             In addition to our USA offices, our other offices are in United Kingdom, China and Afghanistan. This allows us to operationally cover the whole World. We also have a new international office in Singapore which further deePANs our coverage in Asia.

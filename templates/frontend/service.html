@@ -11,6 +11,32 @@
         background-repeat: no repeat;
         background-position: center;
     }
+    .link_back{
+        background-color: rgba(0, 0, 0, 0.8);
+        margin: 1px 50px;
+        padding-block: 12px;
+        width: 240px;
+        margin-left: 200px;
+        border-radius: 10px;
+    }
+    .link_back a{
+        font-size: 19px;
+        color: #fff;
+    }
+    .link_back a:hover{
+        color: #eb0606;
+    }
+    @media (max-width: 1000px){
+        .link_back{
+          
+            margin-left: 50px;
+            padding-block: 8px;
+        }
+    }
+
+    .link_back a{
+        font-size: 14px;
+    }
     
 </style>
 
@@ -20,6 +46,10 @@
         <div class="row justify-content-center align-items-center">
             <div class="col-md-7 py-3 mt-5">
                 <h4 class="text-center text-white mb-3">Services</h4>
+                <div class="link_back text-center">
+                    <a href="/">Home / </a>
+                    <a href="{% url 'frontend:service' %}" class="ms-2"> Services</a>
+                </div>
             </div>
         </div>
     </div>
