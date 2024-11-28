@@ -35,9 +35,11 @@
                 <h6 class="text-secondary text-uppercase">Get In Touch</h6>
                 
                 <h1 class="mb-4">Contact For Any Query</h1>
+                {% include '../account/include/alert.html' %}
+                
                 <p class="mb-4">You can reach us with our email <strong>contact@metroworldexpress.com</strong> or you can reach us by using the form below.</p>
 
-                {% include '../account/include/alert.html' %}
+                
                 <div class="bg-light p-4">
                     <form action="." method="POST" id="contact_form">
                         {% csrf_token %}
