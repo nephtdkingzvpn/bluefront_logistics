@@ -1,0 +1,224 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    #track-hero{
+        background-image: linear-gradient(rgba(6, 3, 21, .7), rgba(6, 3, 21, .6)), url(/static/frontend/images/service-3.jpg);
+        /* background-color: red; */
+        background-size: cover;
+        height: 300px;
+        background-repeat: no repeat;
+        background-position: center;
+    }
+    #about_us_section{
+        background-image: linear-gradient(rgba(6, 3, 21, .7), rgba(6, 3, 21, .6)), url(/static/frontend/images/service-5.jpg);
+        background-size: cover;
+        background-repeat: no repeat;
+        background-position: center;
+        /* margin-top: 30px; */
+    }
+    
+</style>
+
+<!-- track hero -->
+ <section id="track-hero">
+    <div class="container py-5">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-7 py-3 mt-5">
+                <h4 class="text-center text-white mb-3">About Us</h4>
+            </div>
+        </div>
+    </div>
+
+ </section>
+<!-- track hero end-->
+
+<!-- Feature Start -->
+<div class="container-fluid overflow-hidden py-5 px-lg-0">
+    <div class="container feature py-5 px-lg-0">
+        <div class="row g-5 mx-lg-0">
+            <div class="col-lg-6 feature-text wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="text-secondary text-uppercase mb-3">Our Features</h6>
+                <h1 class="mb-5">We Are Trusted Logistics Company Since we started</h1>
+                <div class="d-flex mb-5 wow fadeInUp" data-wow-delay="0.3s">
+                    <i class="fa fa-globe text-primary fa-3x flex-shrink-0"></i>
+                    <div class="ms-4">
+                        <h5>Worldwide Service</h5>
+                        <p class="mb-0">Committed to ensure that all our customer's shipments reach their destination on time while providing affordability and leaving the stress out of it. </p>
+                    </div>
+                </div>
+                <div class="d-flex mb-5 wow fadeIn" data-wow-delay="0.5s">
+                    <i class="fa fa-shipping-fast text-primary fa-3x flex-shrink-0"></i>
+                    <div class="ms-4">
+                        <h5>On Time Delivery</h5>
+                        <p class="mb-0">We are a company committed to providing unparalleled customer satisfaction, expert services, and ethical business conduct.</p>
+                    </div>
+                </div>
+                <div class="d-flex mb-0 wow fadeInUp" data-wow-delay="0.7s">
+                    <i class="fa fa-headphones text-primary fa-3x flex-shrink-0"></i>
+                    <div class="ms-4">
+                        <h5>24/7 Telephone Support</h5>
+                        <p class="mb-0">We have a 24 hours standby customer support to attend to your needs and answer any questions you might have.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 pe-lg-0 wow fadeInRight" data-wow-delay="0.1s" style="min-height: 400px;">
+                <div class="position-relative h-100">
+                    <img class="position-absolute img-fluid w-100 h-100" src="{% static 'frontend/images/feature.jpg' %}" style="object-fit: cover;" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Feature End -->
+
+<!-- mission vision start -->
+<section id="about_us_section">
+    <div class="container py-5">
+        <div class="row mb-4">
+            <div class="col-md-8 text-center">
+                <div class="card shadow wow fadeInUp" data-wow-delay="0.1s" >
+                    <div class="card-body">
+                        <p class="text-muted fw-bold">
+                            Who We Are
+                        </p>
+                        <h5>
+                            EVERYTHING BEGAN IN A GARAGE
+                        </h5>
+                        <hr>
+                        <p>
+                            Established in an enthusiastic logistics professionals, Metro World Express was created to provide solutions to address the growing demands from individuals and small, medium and large sized businesses for their moving and shipping needs. By understanding the challenges and difficulties one could face when dealing with large corporations or local companies, we have designed solutions that provide the highest quality of service while remaining affordable. Now regarded as the #1 choice by our ever-growing client base, we are proud to continue our leadership by providing reliable, cost-effective, and service-oriented moving & shipping services between Greater China, Singapore, United States and the rest of the world.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-8">
+                <div class="card shadow wow fadeInRight" data-wow-delay="0.13s">
+                    <div class="card-body">
+                        <p class="text-muted fw-bold">
+                            Our Commitment
+                        </p>
+                        <h5>
+                            We Are 100% Commited To Our Customer's Satisfaction
+                        </h5>
+                        <p>
+                            At Metro World Express , we keep in mind that before anything else, we are a service provider and that our clients expect nothing less than to be served for what they are paying for.
+                            This is why our clients are guaranteed to be served by the most devoted and dedicated personnel in the industry.
+                            We do our best to put all of our resources at your disposal, so that your moving or shipping experience will leave you with nothing else other than complete satisfaction in our services. At Metro World Express Asia, our mission is to provide you with the best value in the market while serving you as if you are our only client.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            
+            <div class="col-md-7">
+                <div class="card shadow wow fadeInLeft" data-wow-delay="0.17s">
+                    <div class="card-body">
+                        <p class="text-muted fw-bold">
+                            Our Network
+                        </p>
+                        <h5>
+                            We Are 100% Commited To Our Customer's Satisfaction
+                        </h5>
+                        <p>
+                            In addition to our USA offices, our other offices are in United Kingdom, China and Afghanistan. This allows us to operationally cover the whole World. We also have a new international office in Singapore which further deePANs our coverage in Asia.
+
+                            Our main destinations outside of Usa and United Kingdom include: France, China, South Africa, Turkey, Germany, Canada, Malaysia and Australia. We have signed contractual partnerships with local companies who, like us, have world-class knowledge of the industry in their respective countries.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+    </div>
+</section>
+<!-- mission vission end -->
+
+<!-- Team Start -->
+<div class="container-xxl py-5">
+    <div class="container py-5">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="text-secondary text-uppercase">Our Team</h6>
+            <h1 class="mb-5">Expert Team Members</h1>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="team-item p-4">
+                    <div class="overflow-hidden mb-4">
+                        <img class="img-fluid" src="{% static 'frontend/images/chi-22.jpeg' %}" alt="" style="height: 210px; width: 100%; object-fit: cover;">
+                    </div>
+                    <h5 class="mb-0">Yun Chao</h5>
+                    <p>Warehouse Manager</p>
+                    <div class="btn-slide mt-1">
+                        <i class="fa fa-share"></i>
+                        <span>
+                            <a href=""><i class="fab fa-facebook-f"></i></a>
+                            <a href=""><i class="fab fa-twitter"></i></a>
+                            <a href=""><i class="fab fa-instagram"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="team-item p-4">
+                    <div class="overflow-hidden mb-4">
+                        <img class="img-fluid" src="{% static 'frontend/images/team-2.jpg' %}" alt="">
+                    </div>
+                    <h5 class="mb-0">Steven D. Hansen</h5>
+                    <p>Ware House Assistant</p>
+                    <div class="btn-slide mt-1">
+                        <i class="fa fa-share"></i>
+                        <span>
+                            <a href=""><i class="fab fa-facebook-f"></i></a>
+                            <a href=""><i class="fab fa-twitter"></i></a>
+                            <a href=""><i class="fab fa-instagram"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
+                <div class="team-item p-4">
+                    <div class="overflow-hidden mb-4">
+                        <img class="img-fluid" src="{% static 'frontend/images/chi-5.jpeg' %}" alt="" style="height: 210px; width: 100%; object-fit: cover;">
+                    </div>
+                    <h5 class="mb-0">Miguel Reynard</h5>
+                    <p>Dispatch Officer</p>
+                    <div class="btn-slide mt-1">
+                        <i class="fa fa-share"></i>
+                        <span>
+                            <a href=""><i class="fab fa-facebook-f"></i></a>
+                            <a href=""><i class="fab fa-twitter"></i></a>
+                            <a href=""><i class="fab fa-instagram"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.9s">
+                <div class="team-item p-4">
+                    <div class="overflow-hidden mb-4">
+                        <img class="img-fluid" src="{% static 'frontend/images/chi-33.jpeg' %}" alt="" style="height: 210px; width: 100%; object-fit: cover;">
+                    </div>
+                    <h5 class="mb-0">Xin Qian Feng</h5>
+                    <p>District Manager</p>
+                    <div class="btn-slide mt-1">
+                        <i class="fa fa-share"></i>
+                        <span>
+                            <a href=""><i class="fab fa-facebook-f"></i></a>
+                            <a href=""><i class="fab fa-twitter"></i></a>
+                            <a href=""><i class="fab fa-instagram"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Team End -->
+
+{% endblock %}
