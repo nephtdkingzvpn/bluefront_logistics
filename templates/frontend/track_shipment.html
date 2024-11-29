@@ -120,6 +120,36 @@
         border-top-right-radius: 90px !important;
         border-bottom-left-radius: 78px !important;
     }
+
+    @media (max-width: 800px){
+        .step.pending  {
+            margin-bottom: 52px;
+        }
+        .step.active,.step.complete,.step.blocked{
+            margin-bottom: 22px;
+        }
+        .steps::before {
+            top: 30%;
+        }
+        .step .label {
+            font-size: 11px;
+        }
+            .step .date-time {
+            font-size: 10px;
+        }
+        .tracking-header h1 {
+            font-size: 18px;
+        }
+        .comment-header{
+            font-size: 13px;
+        }
+        .comment-remark{
+            font-size: 11px;
+        }
+        .comment_date{
+            font-size: 12px;
+        }
+    }
 </style>
 
 <!-- track hero -->
@@ -148,7 +178,7 @@
 {% if shipments %}
 <div class="container mt-5">
     <div class="row justify-content-center align-items-center mb-5">
-        <div class="col-md-11">
+        <div class="col-12 col-md-11">
             <div class="card p-1">
                 <div class="card-body">
                     <h5 class="card-header text-center">Shipment: {{shipment_single.tracking_number}}</h5>
@@ -209,7 +239,7 @@
                         <p class="comment-header">
                             {{latest_update.status}}
                         </p>
-                        <p class="text-center text-white"><strong>Update: </strong> {{latest_update.remark}}</p>
+                        <p class="text-center text-white comment-remark"><strong>Update: </strong> {{latest_update.remark}}</p>
                         <hr style="border-color: #fff;">
                         <p class="text-center text-light">{{latest_update.created_on}}</p>
                     </div>
