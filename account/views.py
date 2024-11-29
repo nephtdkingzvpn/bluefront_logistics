@@ -130,3 +130,11 @@ def delete_live_update(request, pk):
     messages.success(request, 'Live Update is deleted successfully')
     return redirect('account:shipment_detail', pk=live_update.shipment.pk)
 
+
+def view_receipt(request, pk):
+    shipment = Shipment.objects.get(pk=pk)
+    live_update = LiveUpdate.objects.filter(shipment=shipment).first()
+
+    context = {'shipment':shipment, 'live_update':live_update}
+    return render(request, 'account/receipt.html', context)
+
