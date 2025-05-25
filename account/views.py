@@ -2,12 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.views.generic.list import ListView
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from urllib.parse import urlencode
+
 
 from .models import Shipment, LiveUpdate
 from .forms import ShipmentCreateForm, LiveUpdateCreateForm
+from frontend import emailsend
 
 class DashboardView(LoginRequiredMixin, ListView):
     model = Shipment
@@ -31,9 +36,35 @@ def create_new_shipment(request):
     form = ShipmentCreateForm(request.POST or None)
 
     if form.is_valid():
-        form.save()
-        messages.success(request, 'A new shippment was created successfully')
-        return redirect('account:dashboard')
+        shipment = form.save()
+
+        # Build URLs
+        current_site = get_current_site(request)
+        domain = current_site.domain
+        protocol = 'https' if request.is_secure() else 'http'
+
+        query_string = urlencode({'tracking_number': shipment.tracking_number})
+        tracking_url = f"{protocol}://{domain}{reverse('frontend:track_shipment')}?{query_string}"
+        contact_url = f"{protocol}://{domain}{reverse('frontend:contact_us')}"
+
+        final_message = render_to_string('frontend/emails/shipment_sent_email.html', 
+        {
+            'receiver_name': shipment.receiver_name,
+            'sender_name': shipment.sender_name,
+            'tracking_number': shipment.tracking_number,
+            'dispatched_from': shipment.origin_office,
+            'delivery_date': shipment.delivery_date,
+            'tracking_url': tracking_url,
+            'contact_url': contact_url
+        })
+
+        try:
+            emailsend.email_send('Shipment Registered', final_message, shipment.receiver_email)
+            messages.success(request, 'A new shippment was created successfully and email was sent to the receiver')
+        except:
+            messages.success(request, 'A new shippment was created successfully but email sending failed')
+        finally:
+            return redirect('account:dashboard')
 
     context = {'form':form}
     return render(request, 'account/create_shipment.html', context)

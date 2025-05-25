@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metroworld EXpress</title>
+</head>
+<body>
+    <div class="message-container" style="max-width: 500px; margin: 20px auto;">
+        <p>Dear {{receiver_name}}</p>
+        <p>We are Pleased to inform you that your shipment from {{sender_name}} has been registered with us at Metro World Express.</p>
+        <p style="text-align: center; margin-bottom: 0;">Tracking Information</p>
+        <hr style="margin-top: 0;">
+        <p><strong>Tracking Number: {{tracking_number}}</strong> </p>
+        <p><strong>Shipment Status: Pending</strong> </p>
+        <p><strong>Dispatched From: {{dispatched_from}}</strong> </p>
+        <p><strong>Estimated Delivery Date: {{delivery_date}}</strong> </p>
+        <p>To track your shipment, click here <a href="{{tracking_url}}" style="text-decoration: none; font-weight: 700;">Track Shipment</a></p>
+        <p>For more information visit the <a href="{{contact_url}}" style="text-decoration: none; font-weight: 700">Contact Page</a></p>
+    </div>
+    
+    
+</body>
+</html>

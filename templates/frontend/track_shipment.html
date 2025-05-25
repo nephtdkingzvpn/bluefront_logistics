@@ -162,10 +162,11 @@
                     {% csrf_token%}
 
                     <div class="input-group mb-3">
-                        <input type="text" name="tracking_code" class="form-control" placeholder="Tracking Code">
+                        <input type="text" name="tracking_code" class="form-control" placeholder="Tracking Code" value="{{ shipment_single.tracking_number|default:'' }}">
                         <button class="btn btn-dark" type="submit" id="button-addon2">Track Now</button>
                     </div>
                     {% include '../account/include/alert.html' %}
+                    
                 </form>
             </div>
         </div>
@@ -181,7 +182,13 @@
         <div class="col-12 col-md-11">
             <div class="card p-1">
                 <div class="card-body">
+                    {% if auto_tracked %}
+                        <div class="alert alert-info text-center">
+                            Automatically tracking shipment: <strong>{{ shipment_single.tracking_number }}</strong>
+                        </div>
+                    {% else %}
                     <h5 class="card-header text-center">Shipment: {{shipment_single.tracking_number}}</h5>
+                    {% endif %}
 
 
 
