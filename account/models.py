@@ -47,7 +47,11 @@ class LiveUpdate(models.Model):
 class MessageLog(models.Model):
     STATUS_CHOICES = [
         ('PENDING', 'Pending'),
+        ('QUEUED', 'Queued'),
+        ('SENDING', 'Sending'),
         ('SENT', 'Sent'),
+        ('DELIVERED', 'Delivered'),
+        ('UNDELIVERED', 'Undelivered'),
         ('FAILED', 'Failed'),
         ('ERROR', 'Error'),
     ]
@@ -55,7 +59,7 @@ class MessageLog(models.Model):
     shipment = models.ForeignKey(Shipment, on_delete=models.CASCADE, related_name='sms_logs')
     to = models.CharField(max_length=20)
     message = models.TextField()
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='PENDING')
     error_message = models.TextField(blank=True, null=True)
     sid = models.CharField(max_length=64, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
