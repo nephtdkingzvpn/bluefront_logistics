@@ -17,4 +17,5 @@ urlpatterns = [
 
     # twilio
     path('send-sms/<pk>/', views.admin_send_sms, name='admin_send_sms'),
+    path('sms/status_callback/', views.sms_status_callback, name='sms_status_callback'),
 ]

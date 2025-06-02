@@ -27,7 +27,7 @@ from .models import MessageLog
 
 
 class AsyncSMSMixin:
-    def send_sms_async(self, send_function, to, shipment=None, template=None, context=None, message=None, **kwargs):
+    def send_sms_async(self, send_function, to, shipment=None, template=None, context=None, message=None, request=None, **kwargs):
         def send():
             final_message = message
             status = 'PENDING'
@@ -41,7 +41,7 @@ class AsyncSMSMixin:
                 if not final_message:
                     raise ValueError("SMS message content is empty.")
 
-                result = send_function(to=to, message=final_message, **kwargs)
+                result = send_function(to=to, message=final_message, shipment=shipment, request=request, **kwargs)
                 if isinstance(result, dict):
                     status = result.get('status', 'SENT')
                     sid = result.get('sid')

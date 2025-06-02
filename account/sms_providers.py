@@ -4,6 +4,8 @@ from django.conf import settings
 from twilio.base.exceptions import TwilioRestException
 from twilio.rest import Client as TwilioClient
 
+from .utils import build_full_url
+
 logger = logging.getLogger(__name__)
 
 # def send_sms_twilio(to, message):
@@ -48,7 +50,7 @@ logger = logging.getLogger(__name__)
 #         raise
 
 
-def send_sms_twilio(to, message):
+def send_sms_twilio(to, message, request=None):
     account_sid = getattr(settings, 'TWILIO_ACCOUNT_SID', None)
     auth_token = getattr(settings, 'TWILIO_AUTH_TOKEN', None)
     from_number = getattr(settings, 'TWILIO_FROM', None)
@@ -63,6 +65,9 @@ def send_sms_twilio(to, message):
 
     client = TwilioClient(account_sid, auth_token)
 
+    # get callback url
+    status_callback_url = build_full_url(request, 'account:sms_status_callback')
+    
     # Try alphanumeric sender first
     if alphanumeric_sender:
         try:
@@ -70,7 +75,8 @@ def send_sms_twilio(to, message):
             message_response = client.messages.create(
                 body=message,
                 from_=alphanumeric_sender,
-                to=to
+                to=to,
+                status_callback=status_callback_url
             )
             return {
                 "status": "SENT",
@@ -91,7 +97,8 @@ def send_sms_twilio(to, message):
         message_response = client.messages.create(
             body=message,
             from_=from_number,
-            to=to
+            to=to,
+            status_callback=status_callback_url
         )
         return {
             "status": "SENT",

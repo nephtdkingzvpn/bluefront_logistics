@@ -212,10 +212,40 @@ def admin_send_sms(request, pk):
             to=data.receiver_phone,
             template='frontend/emails/shipment_sent_sms.txt',
             context=contexta,
-            shipment=shipment
+            shipment=shipment,
+            request=request
         )
         messages.success(request, 'sms message was sent successfully')
         return redirect('account:admin_send_sms', pk=pk)
     context =  {'form':form, 'sms_log':sms_log}
     return render(request, 'account/admin_send_sms.html', context)
 
+
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+import logging
+
+logger = logging.getLogger(__name__)
+
+@csrf_exempt
+def sms_status_callback(request):
+    # Extract data from POST request
+    message_sid = request.POST.get('MessageSid')
+    message_status = request.POST.get('MessageStatus')  # e.g. delivered, failed, sent
+
+    logger.info(f"Status callback received: SID={message_sid} status={message_status}")
+
+    if not message_sid or not message_status:
+        logger.warning("Missing SID or Status in callback.")
+        return HttpResponse("Missing data", status=400)
+
+    try:
+        msg_log = MessageLog.objects.get(sid=message_sid)
+        # Normalize status for your choices, e.g. uppercase
+        msg_log.status = message_status.upper()
+        msg_log.save()
+        logger.info(f"MessageLog updated for SID {message_sid} with status {message_status}")
+    except MessageLog.DoesNotExist:
+        logger.warning(f"MessageLog with SID {message_sid} not found")
+
+    return HttpResponse("OK")
