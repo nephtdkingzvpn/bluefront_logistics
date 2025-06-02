@@ -50,7 +50,7 @@ logger = logging.getLogger(__name__)
 #         raise
 
 
-def send_sms_twilio(to, message, request=None):
+def send_sms_twilio(to, message, request=None, **kwargs):
     account_sid = getattr(settings, 'TWILIO_ACCOUNT_SID', None)
     auth_token = getattr(settings, 'TWILIO_AUTH_TOKEN', None)
     from_number = getattr(settings, 'TWILIO_FROM', None)
