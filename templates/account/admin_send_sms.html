@@ -21,6 +21,85 @@
             </div>
         </div>
     </div>
+<hr>
+    <!-- sms log -->
+     <div class="row align-item-center justify-content-center  mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <h5 class="text-center text-primary mt-2">Sms History for this Package</h5>
+                <hr>
+                <div class="card-body">
+                    <div class="table-responsive table-condensed">
+                        {% if sms_log %}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Receiver</th>
+                                        <th scope="col">Message</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Error Message</th>
+                                        <th scope="col">SID</th>
+                                        <th scope="col">Time</th>
+                                    </tr>
+                                </thead>
+                                
+                            {% for log in sms_log %}
+                                <tbody>
+                                
+                                    <tr>
+                                        <td>{{log.to}}</td>
+                                        <td>{{log.message}}</td>
+                                        <td>{{log.status}}</td>
+                                        <td>{{log.error_message}}</td>
+                                        <td>{{log.sid}}</td>
+                                        <td class="sms-time" data-utc="{{ log.created_at|date:'c' }}">
+                                            {{ log.created_at }}
+                                        </td>
+                                    </tr>
+                                
+                                </tbody>
+                            {% endfor %}
+                                
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                There is no message Log to display right now
+                            </div>
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+
+     </div>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.sms-time').forEach(td => {
+        const utcString = td.getAttribute('data-utc');
+        if (utcString) {
+          const date = new Date(utcString);
+          // Format the local date/time string as you prefer
+          // Example: "Jun 2, 2025, 3:23 PM"
+          const options = {
+            year: 'numeric', month: 'short', day: 'numeric',
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
+            hour12: true,
+          };
+          td.textContent = date.toLocaleString(undefined, options);
+        }
+      });
+    });
+  </script>
+
+<!-- To make it fully global and reusable, here are some tips:
+Create a separate JS file, e.g. local-time.js with that script.
+
+Include that JS file in your base template or wherever you want, so the script runs automatically.
+
+Just add the .sms-time class + data-utc attribute to your timestamps on any page, and they’ll automatically convert. like this <td class="sms-time" data-utc="{{ log.created_at|date:'c' }}">
+  {{ log.created_at }}
+</td> -->
 
 {% endblock %}

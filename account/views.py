@@ -10,11 +10,12 @@ from django.contrib.sites.shortcuts import get_current_site
 from urllib.parse import urlencode
 
 
-from .models import Shipment, LiveUpdate
+from .models import Shipment, LiveUpdate, MessageLog
 from .forms import ShipmentCreateForm, LiveUpdateCreateForm, SmsShipmentForm
 from frontend import emailsend
 from .sms import AsyncSMSMixin
 from .sms_providers import send_sms_twilio
+
 
 class DashboardView(LoginRequiredMixin, ListView):
     model = Shipment
@@ -184,6 +185,7 @@ sms_handler = AlertHandler()
 def admin_send_sms(request, pk):
     shipment = Shipment.objects.get(pk=pk)
     form = SmsShipmentForm(request.POST or None, instance=shipment)
+    sms_log = MessageLog.objects.filter(shipment=shipment)
 
     if form.is_valid():
         data = form.save()
@@ -209,10 +211,11 @@ def admin_send_sms(request, pk):
             send_function=send_sms_twilio,
             to=data.receiver_phone,
             template='frontend/emails/shipment_sent_sms.txt',
-            context=contexta
+            context=contexta,
+            shipment=shipment
         )
         messages.success(request, 'sms message was sent successfully')
         return redirect('account:admin_send_sms', pk=pk)
-    context =  {'form':form}
+    context =  {'form':form, 'sms_log':sms_log}
     return render(request, 'account/admin_send_sms.html', context)
 

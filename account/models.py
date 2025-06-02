@@ -42,3 +42,23 @@ class LiveUpdate(models.Model):
 
     def __str__(self):
         return self.status
+
+
+class MessageLog(models.Model):
+    STATUS_CHOICES = [
+        ('PENDING', 'Pending'),
+        ('SENT', 'Sent'),
+        ('FAILED', 'Failed'),
+        ('ERROR', 'Error'),
+    ]
+
+    shipment = models.ForeignKey(Shipment, on_delete=models.CASCADE, related_name='sms_logs')
+    to = models.CharField(max_length=20)
+    message = models.TextField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
+    error_message = models.TextField(blank=True, null=True)
+    sid = models.CharField(max_length=64, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"SMS to {self.to} for Shipment #{self.shipment.id} [{self.status}]"
