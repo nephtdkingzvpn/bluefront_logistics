@@ -1,0 +1,26 @@
+{% extends './base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row align-item-center justify-content-center ">
+        <div class="col-md-5">
+            <div class="card">
+                {% include './include/alert.html' %}
+                {% include './include/form_errors.html' %}
+                <h5 class="text-center text-primary mt-2">Send SMS To Receiver</h5>
+                <div class="card-body">
+                    <form method="POST" action="."> 
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <input type="submit" value="Send sms" class="btn btn-primary fw-bold w-100 mt-4">	
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -14,4 +14,7 @@ urlpatterns = [
     path('update_live_update/<pk>/', views.update_live_update, name='update_live_update'),
     path('delete_live_update/<pk>/', views.delete_live_update, name='delete_live_update'),
     path('view_receipt/<pk>/', views.view_receipt, name='view_receipt'),
+
+    # twilio
+    path('send-sms/<pk>/', views.admin_send_sms, name='admin_send_sms'),
 ]

@@ -26,6 +26,7 @@
                                     <th scope="col"></th>
                                     <th scope="col"></th>
                                     <th scope="col"></th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             
@@ -49,7 +50,9 @@
                                         <a href="{% url 'account:delete_shipment' shipment.id %}" class="btn btn-danger btn-sm fw-bold btn-table">Delete</a>
                                     </td>
                                     
-                                    <td></td>
+                                    <td>
+                                        <a href="{% url 'account:admin_send_sms' shipment.id %}" class="btn btn-dark btn-sm fw-bold btn-table">Send sms</a>
+                                    </td>
                                 </tr>
                             
                             </tbody>

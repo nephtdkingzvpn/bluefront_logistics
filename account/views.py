@@ -11,8 +11,10 @@ from urllib.parse import urlencode
 
 
 from .models import Shipment, LiveUpdate
-from .forms import ShipmentCreateForm, LiveUpdateCreateForm
+from .forms import ShipmentCreateForm, LiveUpdateCreateForm, SmsShipmentForm
 from frontend import emailsend
+from .sms import AsyncSMSMixin
+from .sms_providers import send_sms_twilio
 
 class DashboardView(LoginRequiredMixin, ListView):
     model = Shipment
@@ -168,4 +170,49 @@ def view_receipt(request, pk):
 
     context = {'shipment':shipment, 'live_update':live_update}
     return render(request, 'account/receipt.html', context)
+
+
+
+# twilio
+class AlertHandler(AsyncSMSMixin):
+    pass
+
+sms_handler = AlertHandler()
+
+
+@login_required
+def admin_send_sms(request, pk):
+    shipment = Shipment.objects.get(pk=pk)
+    form = SmsShipmentForm(request.POST or None, instance=shipment)
+
+    if form.is_valid():
+        data = form.save()
+
+        # Build URLs
+        current_site = get_current_site(request)
+        domain = current_site.domain
+        protocol = 'https' if request.is_secure() else 'http'
+
+        query_string = urlencode({'tracking_number': shipment.tracking_number})
+        tracking_url = f"{protocol}://{domain}{reverse('frontend:track_shipment')}?{query_string}"
+
+        contexta = {
+            'receiver_name': data.receiver_name,
+            'sender_name': data.sender_name,
+            'tracking_number': data.tracking_number,
+            'tracking_url': tracking_url,
+        }
+
+        
+        # send sms twilo here
+        sms_handler.send_sms_async(
+            send_function=send_sms_twilio,
+            to=data.receiver_phone,
+            template='frontend/emails/shipment_sent_sms.txt',
+            context=contexta
+        )
+        messages.success(request, 'sms message was sent successfully')
+        return redirect('account:admin_send_sms', pk=pk)
+    context =  {'form':form}
+    return render(request, 'account/admin_send_sms.html', context)
 

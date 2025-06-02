@@ -1,0 +1,4 @@
+Dear {{receiver_name}}
+We are Pleased to inform you that your shipment from {{sender_name}} has been registered with us at Metro World Express.
+Tracking Number: {{tracking_number}}
+To track your shipment, click here {{tracking_url}}
