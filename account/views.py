@@ -185,7 +185,7 @@ sms_handler = AlertHandler()
 def admin_send_sms(request, pk):
     shipment = Shipment.objects.get(pk=pk)
     form = SmsShipmentForm(request.POST or None, instance=shipment)
-    sms_log = MessageLog.objects.filter(shipment=shipment)
+    sms_log = shipment.sms_logs.all().order_by('-created_at')
 
     if form.is_valid():
         data = form.save()
