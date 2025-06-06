@@ -1,5 +1,8 @@
 from django.db import models
 from . import constants
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .tasks import start_geocoding_thread
 
 class Shipment(models.Model):
     sender_name = models.CharField(max_length=150)
@@ -40,8 +43,32 @@ class LiveUpdate(models.Model):
     stages_status = models.CharField(max_length=50, choices=constants.STATES_LIVE_CHOICES)
     stages_label = models.CharField(max_length=50, choices=constants.STATES_LABEL_CHOICES)
 
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+
+        if (self.latitude is None or self.longitude is None) and self.current_location:
+            start_geocoding_thread(self.id)
+
     def __str__(self):
         return self.status
+    
+
+class CountryLocation(models.Model):
+    country_name = models.CharField(max_length=100, unique=True)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+
+    def save(self, *args, **kwargs):
+        # Normalize country_name to title case (e.g., "france" -> "France")
+        self.country_name = self.country_name.title()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.country_name
 
 
 class MessageLog(models.Model):

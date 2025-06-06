@@ -11,3 +11,4 @@ typing_extensions==4.12.2
 tzdata==2024.2
 whitenoise==6.8.2
 twilio==9.6.1
+geopy==2.4.1
