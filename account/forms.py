@@ -43,6 +43,10 @@ class LiveUpdateCreateForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs.update({'class': 'form-control'})
 
+            # Change label for current_location field
+        if 'current_location' in self.fields:
+            self.fields['current_location'].label = "Current Country"
+
 
 class SmsShipmentForm(forms.ModelForm):
 

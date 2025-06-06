@@ -150,6 +150,42 @@
             font-size: 12px;
         }
     }
+
+    #map {
+        width: 100%;
+        height: 400px;       /* Default height */
+        max-height: 500px;   /* Max height on large screens */
+        min-height: 250px;   /* Minimum height */
+        transition: height 0.3s ease; /* smooth height changes */
+        }
+
+        /* Extra small devices (phones, less than 480px) */
+        @media (max-width: 480px) {
+        #map {
+            height: 250px;
+        }
+        }
+
+        /* Small devices (phones, 481px to 768px) */
+        @media (min-width: 481px) and (max-width: 768px) {
+        #map {
+            height: 350px;
+        }
+        }
+
+        /* Medium devices (tablets, 769px to 1023px) */
+        @media (min-width: 769px) and (max-width: 1023px) {
+        #map {
+            height: 450px;
+        }
+        }
+
+        /* Large devices (desktops, 1024px and up) */
+        @media (min-width: 1024px) {
+        #map {
+            height: 500px;
+        }
+        }
 </style>
 
 <!-- track hero -->
@@ -238,6 +274,27 @@
                             </div>
                             {% endif %}
 
+                        </div>
+                    </div>
+
+                    <!-- live update map -->
+                    <div style="position: relative; width: 100%; height: 500px;">
+                        <!-- <div id="map" style="width: 100%; height: 500px;"></div> -->
+                        <div id="map"></div>
+                        <div id="map-legend" style="
+                            background: white;
+                            padding: 6px;
+                            position: absolute;
+                            bottom: 10px;
+                            left: 10px;
+                            border-radius: 5px;
+                            font-size: 14px;
+                            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+                            z-index: 1000;
+                            ">
+                            <div><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png" style="height:20px; vertical-align:middle;"> Start Location</div>
+                            <div><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png" style="height:20px; vertical-align:middle;"> Intermediate Location</div>
+                            <div><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png" style="height:20px; vertical-align:middle;"> Current Location</div>
                         </div>
                     </div>
 
@@ -363,4 +420,70 @@
 </div>
 <!-- Feature End -->
 {% endif %}
+
+
+<script>
+    const locations = JSON.parse('{{ locations_json|escapejs }}');
+
+    const map = L.map('map').setView(
+        locations.length ? [locations[0].lat, locations[0].lng] : [0, 0], 4
+    );
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Define marker icons
+    const defaultIcon = L.icon({
+      iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+    });
+
+    const startIcon = L.icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+    });
+
+    const currentIcon = L.icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+    });
+
+    // Array of LatLng for polyline
+    const latlngs = locations.map(loc => [loc.lat, loc.lng]);
+
+    // Add markers with different icons for start and current
+    locations.forEach((loc, index) => {
+        let iconToUse = defaultIcon;
+        if (index === 0) iconToUse = startIcon;            // Starting point - green
+        else if (index === locations.length - 1) iconToUse = currentIcon;  // Current point - red
+
+        L.marker([loc.lat, loc.lng], { icon: iconToUse })
+         .addTo(map)
+         .bindPopup(`<strong>${loc.location}</strong><br>Status: ${loc.status}<br>Time: ${loc.time}`);
+    });
+
+    // Draw red polyline connecting points
+    if (latlngs.length > 1) {
+        const polyline = L.polyline(latlngs, {color: 'red', weight: 4, opacity: 0.7}).addTo(map);
+        map.fitBounds(polyline.getBounds().pad(0.2));
+
+        // After fitting bounds, check zoom and set minimum zoom level if needed
+        const currentZoom = map.getZoom();
+        const minZoom = 5;  // adjust this to your preferred default zoom for country view
+        if (currentZoom > minZoom) {
+            map.setZoom(minZoom);
+        }
+    } else if (latlngs.length === 1) {
+        map.setView(latlngs[0], 5);  // zoom level 5 for single point - country-level
+    }
+
+</script>
 {% endblock %}

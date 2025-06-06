@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from urllib.parse import urlencode
+import json
 
 
 from .models import Shipment, LiveUpdate, MessageLog
@@ -109,29 +110,36 @@ def shipment_detail(request, pk):
         update_live_object.shipment = shipment
         update_live_object.save()
         
-        # Set a session variable to indicate that the form was submitted
         request.session['form_submitted'] = True
-
-        # Display a success message
         messages.success(request, 'Live Update is saved successfully')
-        
-        # Redirect to the same shipment detail page
         return redirect('account:shipment_detail', pk=pk)
     
-    # Check if the session variable exists
     form_submitted = request.session.pop('form_submitted', False)
 
-    # Render the page with the context data
+    # Prepare list of locations with lat/lon for JS
+    locations = [
+        {
+            "lat": update.latitude,
+            "lng": update.longitude,
+            "location": update.current_location,
+            "status": update.status,
+            "time": update.created_on.strftime("%Y-%m-%d %H:%M:%S")
+        }
+        for update in live_update if update.latitude is not None and update.longitude is not None
+    ]
+
     context = {
         'shipment': shipment,
         'live_update': live_update,
         'update_count': live_update_count,
         'latest_update': latest_update,
         'form': form,
-        'form_submitted': form_submitted
+        'form_submitted': form_submitted,
+        'locations_json': json.dumps(locations)  # Pass JSON to template
     }
 
     return render(request, 'account/shipment_detail.html', context)
+
 
 
 @login_required

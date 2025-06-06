@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
+import json
 
 from account.models import Shipment, LiveUpdate
 from . import emailsend
@@ -39,6 +40,18 @@ def track_shipment(request):
             live_update_count = live_update.count()
             latest_update = live_update.last()
 
+            # Prepare list of locations with lat/lon for JS
+            locations = [
+                {
+                    "lat": update.latitude,
+                    "lng": update.longitude,
+                    "location": update.current_location,
+                    "status": update.status,
+                    "time": update.created_on.strftime("%Y-%m-%d %H:%M:%S")
+                }
+                for update in live_update if update.latitude is not None and update.longitude is not None
+            ]
+
             return render(request, 'frontend/track_shipment.html', {
                 'shipments': shipments,
                 'shipment_single': shipment_single,
@@ -46,6 +59,7 @@ def track_shipment(request):
                 'latest_update': latest_update,
                 'live_update': live_update,
                 'auto_tracked': True,  # Optional flag for your template
+                'locations_json': json.dumps(locations),
             })
         else:
             messages.error(request, "Invalid tracking code. Please check the code and try again.")
