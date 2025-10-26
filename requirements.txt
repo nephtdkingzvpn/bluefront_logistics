@@ -12,3 +12,5 @@ tzdata==2024.2
 whitenoise==6.8.2
 twilio==9.6.1
 geopy==2.4.1
+django-anymail
+

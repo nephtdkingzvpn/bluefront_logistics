@@ -62,6 +62,8 @@ def create_new_shipment(request):
             'contact_url': contact_url
         })
 
+        # emailsend.email_send('Shipment Registered', final_message, shipment.receiver_email)
+        # return redirect('account:dashboard')
         try:
             emailsend.email_send('Shipment Registered', final_message, shipment.receiver_email)
             messages.success(request, 'A new shippment was created successfully and email was sent to the receiver')
